@@ -2,7 +2,6 @@ package com.example.androidhomework2_hej
 
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
-import android.app.job.JobService
 import android.content.ComponentName
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.androidhomework2_hej.databinding.ActivityMainBinding
+import com.example.androidhomework2_hej.service.MyJobService
+import com.example.androidhomework2_hej.service.MyWifiJobService
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -34,8 +35,18 @@ class MainActivity : AppCompatActivity() {
 
     }//onCreate
 
+    private fun updateJob() {
+        val serComponent = ComponentName(this, MyJobService::class.java)
+        val jobInfo = JobInfo.Builder(1, serComponent)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            .setPeriodic(15 * 60 * 1000)
+            .build()
+        val scheduler = getSystemService(JobScheduler::class.java)
+        scheduler.schedule(jobInfo)
+    }
+
     private fun checkWifi() {
-        val componentName = ComponentName(this, MyJobService::class.java)
+        val componentName = ComponentName(this, MyWifiJobService::class.java)
 
         val builder = JobInfo.Builder(1, componentName)
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
@@ -43,8 +54,9 @@ class MainActivity : AppCompatActivity() {
         val result = scheduler.schedule(builder.build())
 
         if (result == JobScheduler.RESULT_SUCCESS) {
-            Toast.makeText(this, "wifi연결됨", Toast.LENGTH_SHORT).show()
             //연결 된 상태일 경우 할 일
+            Toast.makeText(this, "wifi연결됨", Toast.LENGTH_SHORT).show()
+            updateJob()
         } else {
             Toast.makeText(this, "wifi연결안됨", Toast.LENGTH_SHORT).show()
             //연결 안 된 상태

@@ -1,4 +1,4 @@
-package com.example.androidhomework2_hej
+package com.example.androidhomework2_hej.service
 
 import android.app.job.JobParameters
 import android.app.job.JobService
@@ -6,7 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 
-class MyJobService : JobService() {
+class MyWifiJobService : JobService() {
     override fun onStartJob(params: JobParameters?): Boolean {
         if (isWifiConnected())
             Log.d("EJ", "onStartJob: wifi연결 됨")
