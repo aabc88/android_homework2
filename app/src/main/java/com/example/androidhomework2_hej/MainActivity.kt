@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         initPermission() //알림권한
-        //checkWifi()
+        checkWifi()
 
     }//onCreate
 
@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
             //연결 된 상태일 경우 할 일
         } else {
             Toast.makeText(this, "wifi연결안됨", Toast.LENGTH_SHORT).show()
-
             //연결 안 된 상태
         }
     }
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         permissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) {
                 if (it) Toast.makeText(this, "권한 허용됨", Toast.LENGTH_SHORT).show()
-                else Toast.makeText(this, "권한 거부됨", Toast.LENGTH_SHORT).show().also { finish() }
+                else Toast.makeText(this, "권한 거부됨", Toast.LENGTH_SHORT).show()
             }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
