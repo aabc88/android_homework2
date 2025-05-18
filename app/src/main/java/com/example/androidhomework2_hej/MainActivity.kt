@@ -31,35 +31,33 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         initPermission() //알림권한
-        checkWifi()
+        checkWifi() //wifi연결 확인
 
     }//onCreate
 
     private fun updateJob() {
-        val serComponent = ComponentName(this, MyJobService::class.java)
-        val jobInfo = JobInfo.Builder(1, serComponent)
+        val componentName = ComponentName(this, MyJobService::class.java)
+
+        val builder = JobInfo.Builder(1, componentName)
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-            .setPeriodic(15 * 60 * 1000)
             .build()
         val scheduler = getSystemService(JobScheduler::class.java)
-        scheduler.schedule(jobInfo)
+        scheduler.schedule(builder)
     }
 
     private fun checkWifi() {
         val componentName = ComponentName(this, MyWifiJobService::class.java)
 
         val builder = JobInfo.Builder(1, componentName)
-            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
         val scheduler = getSystemService(JobScheduler::class.java)
         val result = scheduler.schedule(builder.build())
 
         if (result == JobScheduler.RESULT_SUCCESS) {
-            //연결 된 상태일 경우 할 일
             Toast.makeText(this, "wifi연결됨", Toast.LENGTH_SHORT).show()
             updateJob()
         } else {
             Toast.makeText(this, "wifi연결안됨", Toast.LENGTH_SHORT).show()
-            //연결 안 된 상태
         }
     }
 

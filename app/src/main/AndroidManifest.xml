@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
 
     <application
         android:allowBackup="true"
@@ -16,10 +20,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidHomework2_HEJ"
         tools:targetApi="31">
+
+        <service
+            android:name=".service.UpdateService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <receiver
+            android:name=".service.UpdateActionReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
         <receiver
             android:name=".service.UpdateReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <service
             android:name=".service.MyJobService"

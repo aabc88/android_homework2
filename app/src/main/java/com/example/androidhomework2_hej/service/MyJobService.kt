@@ -22,7 +22,7 @@ class MyJobService : JobService() {
     }
 
     private fun sendNoti() {
-        val channelId = "my_job"
+        val channelId = "update_channel"
         val nm = getSystemService(NotificationManager::class.java)
 
         val updateIntent = Intent(this, UpdateReceiver::class.java).apply {
@@ -40,19 +40,19 @@ class MyJobService : JobService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "test",
-                NotificationManager.IMPORTANCE_DEFAULT
+                "업데이트 채널",
+                NotificationManager.IMPORTANCE_HIGH
             )
             nm.createNotificationChannel(channel)
         }
 
         val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("TEST")
-            .setContentText("test")
+            .setContentTitle("업데이트")
+            .setContentText("WIFI에 연결되었습니다. 지금 업데이트 하시겠습니까?")
             .setSmallIcon(R.drawable.baseline_autorenew_24)
             .addAction(R.drawable.baseline_autorenew_24, "업데이트", updatePendingIntent)
             .build()
-        nm.notify(10, notification)
+        nm.notify(Channel.notificationId.channelCode, notification)
     }
 
     override fun onStopJob(params: JobParameters?): Boolean {
